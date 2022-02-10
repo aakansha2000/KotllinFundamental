@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     val TAG = "MainActivityTag"
@@ -14,27 +15,34 @@ class MainActivity : AppCompatActivity() {
     lateinit var age: EditText
     lateinit var jobId: EditText
     lateinit var phone: EditText
-    lateinit var sbtBtn: Button
+    var sbtBtn: Button? = null // Button and Button?
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.d(TAG,"oncreate called")
-        name = findViewById<EditText>(R.id.etName);
+        Log.d(TAG, "oncreate called")
+        name = findViewById(R.id.etName)
         age = findViewById<EditText>(R.id.etage);
         phone = findViewById<EditText>(R.id.etphone);
         jobId = findViewById<EditText>(R.id.etjobid);
         sbtBtn = findViewById(R.id.submitBtn)
-        sbtBtn.setOnClickListener(View.OnClickListener { v->
-            val intent=Intent(this,MainActivity2::class.java);
-            intent.putExtra("name", name.text.toString())
-            intent.putExtra("age", age.text.toString())
-            intent.putExtra("phone", phone.text.toString())
-            intent.putExtra("jobid", jobId.text.toString())
-            startActivity(intent);
-           // finish();
-            Log.d(TAG,"finish called");
-        })
+
+        sbtBtn?.setOnClickListener { _ ->
+            startActivity(
+                Intent(this, MainActivity2::class.java)?.apply {
+                putExtra("name", name.text.toString())
+                putExtra("age", age.text.toString())
+                putExtra("phone", phone.text.toString())
+                putExtra("jobid", jobId.text.toString())
+                } ?: return@setOnClickListener
+            )
+            Log.d(TAG, "finish called")
+        }
+
+        var nullableString: String? = null
+        val lengthOfNullableString = nullableString?.length ?: 0
+        println(lengthOfNullableString)
+
     }
 
     override fun onStart() {
@@ -49,26 +57,24 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        Log.d(TAG,"onStop started")
+        Log.d(TAG, "onStop started")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d(TAG,"onPause started")
+        Log.d(TAG, "onPause started")
     }
 
     override fun onRestart() {
         super.onRestart()
-        Log.d(TAG,"onRestart started")
+        Log.d(TAG, "onRestart started")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG,"onDestroy started ")
+        Log.d(TAG, "onDestroy started ")
 
     }
-
-
 
 
 }
